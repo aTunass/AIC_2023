@@ -1,0 +1,19 @@
+Data/
+│
+├── Keyframes_L01/ 
+│   ├── L01_V001/
+│       └── 000000.jpg - Tất cả các images 
+│   ├── L01_V002/
+│       └── 000000.jpg - Tất cả các images 
+│   ├── ... 
+│
+├── Keyframes_L02/ 
+│   ├── L02_V001/
+│       └── 000000.jpg - Tất cả các images 
+│   ├── L02_V002/
+│       └── 000000.jpg - Tất cả các images 
+│   ├── ... 
+│
+├── ...
+
+static/Data
