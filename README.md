@@ -22,9 +22,11 @@ Leader: [Nguyễn Hoàng Anh Tuấn](https://github.com/aTunass)
 - [Trần Hữu Hiếu](https://github.com/HieuTran2019)
 ---
 ## To do task 
-- [x] [Faiss_Processing]()
+- [x] [Faiss]()
 - [x] [BLIP]()
-- [x] [Video search]()
+- [x] [TransnetV2]()
+- [x] [Flask]
+- [x] [Front-end]
 ---
 ## Setup
 ```
