@@ -90,3 +90,20 @@ class MyFaiss:
     image_paths = list(map(self.id2img_fps.get, list(map(str, idx_image))))
 
     return scores, idx_image, image_paths
+  def image_search(self, id_query, k): 
+        query_feats = self.index.reconstruct(id_query).reshape(1,-1)
+
+        scores, idx_image = self.index.search(query_feats, k=k)
+        idx_image = idx_image.flatten()
+        image_paths = list(map(self.id2img_fps.get, list(map(str, idx_image))))
+
+        return scores, idx_image, image_paths 
+  def test(self, id):
+     image_paths = list(map(self.id2img_fps.get, list(map(str, id))))
+     return image_paths
+  def get_id_from_img_path(self, img_path):
+        # Reverse lookup: Get the ID based on the image path
+        for id, path in self.id2img_fps.items():
+            if path == img_path:
+                return int(id)
+        return None  # If the image path is not found

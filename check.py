@@ -21,7 +21,7 @@ model = model.to(device=device)
 # print(image_feat @ text_feature1.t())
 ##### TESTING #####
 bin_file='faiss_cosine_1_3.bin'
-json_path = 'keyframes_id_1_3.json'
+json_path = 'modified_paths.json'
 
 cosine_faiss = MyFaiss('Data', bin_file, json_path)
 
@@ -31,5 +31,6 @@ text = 'Có hai người dẫn chương trình, một người là nam mặc áo
 
 scores, idx_image, image_paths = cosine_faiss.text_search(text, k=25, trans=True, model=model)
 print(scores) 
-print(image_paths)
+# print(image_paths)
 print(idx_image)
+print(type(idx_image))

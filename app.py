@@ -67,16 +67,23 @@ def show_image_search():
 @app.route('/image_search')
 def image_search():
     print("images_search")
-    image_path = request.args.get('imagePath', '')
+    try:
+        image_path = request.args.get('imagePath', '')
+    except:
+        pass
+    print(image_path)
+    #cat mot phan image path
+    base_folder = "static"
+    relative_path = image_path.replace(base_folder + '/', '', 1)
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 42))
-    #images_path = os.path.join('static', 'images')  # Thư mục chứa ảnh
+    id_query = cosine_faiss.get_id_from_img_path(relative_path)
+
+    scores, idx_image, image_paths = cosine_faiss.image_search(id_query, k=250)
 
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
-
-    #image_files = os.listdir(images_path)[start_idx:end_idx]
-    image_files = values_list[start_idx:end_idx]
+    image_files = image_paths[start_idx:end_idx]
 
     images = [os.path.join('static', filename) for filename in image_files]
     return jsonify({'results': images})
@@ -85,11 +92,6 @@ def image_search():
 def submit_image():
     data = request.get_json()
     image_path = data.get('imagePath', '')
-    
-    # Thực hiện xử lý với đường dẫn ảnh (image_path) theo nhu cầu của bạn
-    # Ví dụ: Lưu đường dẫn vào cơ sở dữ liệu, xử lý và trả về kết quả
-    
-    # Giả sử kết quả xử lý là một thông báo thành công
     print(image_path)
     result = {'message': 'Image submitted successfully'}
     return jsonify(result)
