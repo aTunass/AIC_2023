@@ -6,7 +6,7 @@ body {
 
 .container {
     display: flex;
-    height: 100vh;
+    height: 100vh; 
     margin: 0px;
 }
 
@@ -141,6 +141,15 @@ h2 {
 }
 #info-text {
     font-size: 12px; /* Thay đổi kích thước font chữ */
+}
+#images_search_button {
+    font-size: 12px; /* Thay đổi kích thước font chữ */
+}
+#show_csv{
+    margin-left: 20px;
+}
+#Download_csv{
+    margin-top: 20px;
 }
 .green-border {
     border: 8px solid rgb(32, 209, 15); /* Định dạng viền xanh lá */

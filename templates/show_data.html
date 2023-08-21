@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show and Edit CSV Data</title>
+</head>
+<body>
+    <h1>CSV Data</h1>
+    <button onclick="deleteAllRows()">Delete All</button>
+    <input type="text" id="fileName" placeholder="File Name" value="query">
+    <button onclick="downloadCSV()">Download CSV</button>
+
+    <table>
+        <tr>
+            <th>Video Name</th>
+            <th>Image Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for row in csv_data %}
+        <tr id="row{{ loop.index }}">
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>
+                <button onclick="deleteRow(this.getAttribute('data-row'))" data-row="{{ loop.index }}">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <input type="text" id="videoName" placeholder="Video Name" value="L05_001">
+    <input type="text" id="imageName" placeholder="Image Name"> 
+    <input type="number" id="position" placeholder="Position">
+    <button onclick="addRow()">Add</button>
+    
+    <script>
+    function deleteRow(rowNumber) {
+        // Gửi yêu cầu xóa dữ liệu tới máy chủ
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/delete_row/" + rowNumber, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Xóa dòng dữ liệu trên giao diện người dùng
+                document.getElementById("row" + rowNumber).remove();
+            }
+        };
+        xhr.send();
+    }
+    function downloadCSV() {
+    var fileName = document.getElementById("fileName").value; // Lấy giá trị tên tệp từ trường nhập liệu
+    
+    // Gửi yêu cầu tải xuống tệp CSV với tham số file_name
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/download_csv?file_name=" + fileName, true); // Thêm tham số vào URL
+    xhr.responseType = "blob"; // Định dạng dữ liệu nhận về là blob
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Tạo một đối tượng URL để tạo liên kết tải xuống
+            var url = URL.createObjectURL(xhr.response);
+            
+            // Tạo một thẻ a (liên kết ẩn) để thực hiện tải xuống
+            var a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = fileName + ".csv"; // Tên tệp tải xuống với định dạng .csv
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    };
+    xhr.send();
+}
+
+    function deleteAllRows() {
+    // Gửi yêu cầu xóa tất cả dữ liệu tới máy chủ
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/delete_all_rows", true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Xóa dữ liệu hiện có trong bảng
+            var table = document.querySelector("table");
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+        }
+    };
+    xhr.send();
+}
+    function addRow() {
+        var position = parseInt(document.getElementById("position").value);
+        var videoName = document.getElementById("videoName").value;
+        var imageName = document.getElementById("imageName").value;
+        
+        // Gửi yêu cầu thêm dữ liệu tới máy chủ
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/add_row/" + position, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Cập nhật dòng dữ liệu mới trên giao diện người dùng
+                var newRow = document.createElement("tr");
+                newRow.id = "row" + (position);
+                newRow.innerHTML = "<td>" + videoName + "</td><td>" + imageName + "</td><td><button onclick=\"deleteRow(" + (position) + ")\">Delete</button></td>";
+                document.querySelector("table").appendChild(newRow);
+                
+                // Xóa giá trị trong trường nhập liệu
+                document.getElementById("position").value = "";
+                document.getElementById("videoName").value = "";
+                document.getElementById("imageName").value = "";
+            }
+        };
+        var data = {
+            "videoName": videoName,
+            "imageName": imageName
+        };
+        xhr.send(JSON.stringify(data));
+        location.reload();
+    }
+    </script>
+</body>
+</html>

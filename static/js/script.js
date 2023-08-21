@@ -6,7 +6,7 @@ const searchAltButton = document.getElementById('show_images');
 let searchText = document.getElementById("search-box").value;
 let trans = 1;
 let btn_text_serach = 0;
-let currentURL = window.location.href;
+let currentURL = window.location.href; 
 let image_path_search = ""
 let image_video_search=""
 const searchString = 'show_image_search';
@@ -151,6 +151,14 @@ const show_options = document.getElementById('images_search_button')
                 searchByText(searchText, currentPage, trans);
             }
         });
+const Download_csv = document.getElementById('Download_csv')
+        Download_csv.addEventListener("click", function() {
+            Download_csv_file();
+        });
+const show_data = document.getElementById('show_csv')
+        show_data.addEventListener("click", function() {
+            Show_CSV();
+        });
 function shortenImagePath(fullPath) {
     const parts = fullPath.split('/');
     if (parts.length >= 3) {
@@ -199,6 +207,12 @@ function Image_video(imagePath, page, run_image_video){
         })
         .catch(error => console.error('Error searching:', error));
 }
+function Show_CSV(){
+    const newWindow = window.open('/show_data');
+    // newWindow.addEventListener('load', function() {
+    //     newWindow.Image_search(imagePath, 1, 1);
+    // });
+}
 function Show_Image_search(imagePath) {
     const newWindow = window.open(`/show_image_search?imagePath=${encodeURIComponent(imagePath)}`, '_blank');
     newWindow.addEventListener('load', function() {
@@ -211,7 +225,28 @@ function Show_Image_video(imagePath) {
         newWindow.Image_video(imagePath, 1, 1);
     });
 }
-
+function Download_csv_file(){
+    // Tạo yêu cầu tải xuống tệp CSV
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/download_csv", true);
+    xhr.responseType = "blob"; // Định dạng dữ liệu nhận về là blob
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Tạo một đối tượng URL để tạo liên kết tải xuống
+            var url = URL.createObjectURL(xhr.response);
+            
+            // Tạo một thẻ a (liên kết ẩn) để thực hiện tải xuống
+            var a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = "csv_data.csv"; // Tên tệp tải xuống
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    };
+    xhr.send();
+}
 function handleImageSubmit(imagePath) {
     // Gửi đường dẫn ảnh lên server (Flask) để xử lý
     fetch('/submit_image', {

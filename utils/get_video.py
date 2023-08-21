@@ -62,7 +62,7 @@ def get_video(image_path, k_scenes, database):
         print("Không tìm thấy danh sách con thỏa điều kiện.")
 if __name__ == "__main__":
     image_path = "Data/Keyframes_L05/L05_V001/000561.jpg"
-    database = "web/static"
+    database = "static"
     result_combine, result_filter= get_video(image_path=image_path, k_scenes=12, database=database)
     print(result_combine)
 # import cv2

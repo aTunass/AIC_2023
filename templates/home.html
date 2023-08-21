@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Image Search</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/styles.css') }}">
 </head>
 <body>
 
@@ -35,6 +35,8 @@
             <h2>Image Path static/Data/</h2>
             <p id="info-text">Click on an image to see its path.</p>
             <button id="images_search_button">Show options</button>
+            <button id="show_csv">Show csv</button>
+            <button id="Download_csv">Download</button>
         </div>
     </div>
     <div class="image-container" id="image-container">
@@ -42,7 +44,7 @@
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='js/script.js') }}">
+<script src="{{ url_for('static', filename='/js/script.js') }}">
 </script>
 
 </body>

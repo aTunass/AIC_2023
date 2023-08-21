@@ -1,26 +1,33 @@
 import os
+import csv
 import json
-from flask import Flask, render_template, jsonify, request, send_from_directory
+from flask import Flask, render_template, jsonify, request, send_from_directory, send_file
 import torch
+
+import sys
+sys.path.append('/home/tuan/Desktop/AIC_2023/utils')
+print(sys.path)
+
 from utils.My_BLIP import my_blip_itm, load_image
 from utils.My_Faiss import MyFaiss
 from utils.get_video import get_video
 #load model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_retrieval_coco.pth'
-image_size = 384
-#load model
-model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
-model.eval()
-model = model.to(device=device)
+# model_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_retrieval_coco.pth'
+# image_size = 384
+# #load model
+# model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
+# model.eval()
+# model = model.to(device=device)
+model=1
 
 #Load Faiss
-bin_file='faiss_cosine_1_3.bin'
-json_path = 'modified_paths.json'
+bin_file='faiss_cosine_L05.bin'
+json_path = 'keyframes_L05.json'
 cosine_faiss = MyFaiss('Data', bin_file, json_path)
 #List path
 # Đường dẫn tới tệp JSON
-input_file = 'modified_paths.json'
+input_file = 'keyframes_L05.json'
 # Đọc dữ liệu từ tệp JSON
 with open(input_file, 'r') as file:
     modified_paths = json.load(file)
@@ -109,13 +116,57 @@ def image_video():
     result_combine = result_combine[start_idx:end_idx]
     return jsonify({'result_combine': result_combine, 'result_filter': result_filter})
 
+csv_data = []
 @app.route('/submit_image', methods=['POST'])
 def submit_image():
     data = request.get_json()
     image_path = data.get('imagePath', '')
-    print(image_path)
+
+    # Lấy tên file video và tên hình ảnh từ đường dẫn
+    video_name = os.path.basename(os.path.dirname(image_path))
+    image_name = os.path.splitext(os.path.basename(image_path))[0]
+
+    # Thêm dữ liệu vào danh sách
+    csv_data.append([video_name, image_name])
+
     result = {'message': 'Image submitted successfully'}
     return jsonify(result)
+@app.route('/show_data')
+def show_data():
+    return render_template('show_data.html', csv_data=csv_data)
+@app.route('/add_row/<int:position>', methods=['POST'])
+def add_row(position):
+    data = request.json
+    print(position)
+    video_name = data.get('videoName', '')
+    image_name = data.get('imageName', '')
+    
+    csv_data.insert(position, [video_name, image_name]) 
+    
+    return "Row added successfully", 200
+
+@app.route('/delete_row/<int:row_number>', methods=['POST'])
+def delete_row(row_number):
+    print(row_number)
+    row_number = row_number-1
+    if row_number < len(csv_data):
+        del csv_data[row_number]
+        return "Row deleted successfully", 200
+    else:
+        return "Row not found", 404
+@app.route('/delete_all_rows', methods=['POST'])
+def delete_all_rows():
+    global csv_data
+    csv_data = [['Video Name', 'Image Name']]
+    return "All rows deleted successfully", 200
+@app.route('/download_csv')
+def download_csv():
+    file_name = request.args.get('file_name', 'csv_data')  # Lấy giá trị tên tệp từ trường nhập liệu
+    csv_file_path = '/home/tuan/Desktop/AIC_2023/submit/' + file_name + '.csv'
+    with open(csv_file_path, mode='w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerows(csv_data)
+    return "CSV file saved successfully"
 
 
 if __name__ == '__main__':
