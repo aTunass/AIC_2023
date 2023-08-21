@@ -13,13 +13,13 @@ from utils.My_Faiss import MyFaiss
 from utils.get_video import get_video
 #load model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# model_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_retrieval_coco.pth'
-# image_size = 384
-# #load model
-# model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
-# model.eval()
-# model = model.to(device=device)
-model=1
+model_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_retrieval_coco.pth'
+image_size = 384
+#load model
+model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
+model.eval()
+model = model.to(device=device)
+# model=1
 
 #Load Faiss
 bin_file='faiss_cosine_L05.bin'
