@@ -2,33 +2,41 @@ const viRadio = document.getElementById('vi');
 const enRadio = document.getElementById('en');
 const searchButton = document.getElementById('search-button');
 const searchAltButton = document.getElementById('show_images');
+
 let searchText = document.getElementById("search-box").value;
 let trans = 1;
 let btn_text_serach = 0;
 let currentURL = window.location.href;
 let image_path_search = ""
+let image_video_search=""
 const searchString = 'show_image_search';
 const regex = new RegExp(searchString, 'i'); // 'i' ở đây có nghĩa không phân biệt chữ hoa chữ thường
+const searchVideo = 'show_image_video';
+const regex_video = new RegExp(searchVideo, 'i'); // 'i' ở đây có nghĩa không phân biệt chữ hoa chữ thường
 let check_click=0;
 let newWindow;
 let image_path_new = ""
 let totalImages = 0
 let img_path_backup=""
+let img_path_backup_video=""
 const imagesPerPage = 42;
 // Biến để theo dõi trang hiện tại
 let currentPage = 1;
 let run_image_search = 0;
+let run_image_video = 0;
 
-const btn_reset=document.getElementById('reset')
-btn_reset.addEventListener('click', function() {
-    trans = 1;
-    btn_text_serach = 0;
-    check_click=0;
-    image_path_new = "";
-    image_path_search = "";
-    currentPage = 1;
-    run_image_search = 0;
-});
+// const btn_reset=document.getElementById('reset')
+// btn_reset.addEventListener('click', function() {
+//     trans = 1;
+//     btn_text_serach = 0;
+//     check_click=0;
+//     image_path_new = "";
+//     image_path_search = "";
+//     image_video_search = "";
+//     currentPage = 1;
+//     run_image_search = 0;
+//     run_image_video = 0;
+// });
 viRadio.addEventListener('change', function() {
     if (viRadio.checked) {
         console.log('Selected language: Vietnamese');
@@ -56,6 +64,9 @@ searchAltButton.addEventListener('click', function() {
     if (regex.test(currentURL)) {
         run_image_search=1;
         Image_search(image_path_search, currentPage, run_image_search);
+    }else if (regex_video.test(currentURL)){
+        run_image_video=1;
+        Image_video(image_video_search, currentPage, run_image_video);
     }
     else if (btn_text_serach==0){
         loadImagesForPage(currentPage);
@@ -67,14 +78,18 @@ searchAltButton.addEventListener('click', function() {
 });
 // Số lượng ảnh hiển thị trong mỗi trang
 // Function để thêm ảnh vào lưới
-function addImagesToGrid(images) {
+function addImagesToGrid(images, shouldAddBorder, imagesToBorder) {
     const imageContainer = document.getElementById("image-container");
     imageContainer.innerHTML = "";
     images.forEach(imagePath => {
         const imageItem = document.createElement("div");
         imageItem.className = "image-item";
         imageItem.style.backgroundImage = "url('" + imagePath + "')";
-
+        if (shouldAddBorder) {
+            if (imagesToBorder.includes(imagePath)) {
+                imageItem.classList.add("green-border"); // Thêm lớp để có border xanh lá
+            }
+        }
         // Thêm sự kiện click cho mỗi bức ảnh
         imageItem.addEventListener("click", function() {
             // Lấy phần tử chứa thông tin ảnh
@@ -99,6 +114,13 @@ function addImagesToGrid(images) {
             image_path_search = imagePath
             Show_Image_search(imagePath);
         });
+        const imageVideoButton = document.createElement("button");
+        imageVideoButton.className = "Image_video"
+        imageVideoButton.textContent = "V-S";
+        imageVideoButton.addEventListener("click", function() {
+            image_video_search = imagePath
+            Show_Image_video(imagePath);
+        });
         
         const imagePathSpan = document.createElement("span");
         imagePathSpan.className = "image-path";
@@ -107,6 +129,7 @@ function addImagesToGrid(images) {
         if (check_click==1){
             imageItem.appendChild(submitButton);
             imageItem.appendChild(newPageButton);
+            imageItem.appendChild(imageVideoButton);
         }
         
         imageContainer.appendChild(imageItem);
@@ -118,6 +141,9 @@ const show_options = document.getElementById('images_search_button')
             if (regex.test(currentURL)) {
                 run_image_search=1;
                 Image_search(image_path_search, currentPage, run_image_search);
+            }else if (regex_video.test(currentURL)){
+                run_image_video=1;
+                Image_video(image_video_search, currentPage, run_image_video);
             }
             else if (btn_text_serach==0){
                 loadImagesForPage(currentPage);
@@ -136,7 +162,7 @@ function searchByText(text, page, trans) {
     fetch(`/text_search?query=${text}&trans=${trans}&page=${page}&per_page=${imagesPerPage}`)
         .then(response => response.json())
         .then(data => {
-            addImagesToGrid(data.results);
+            addImagesToGrid(data.results, false, []);
         })
         .catch(error => console.error('Error searching:', error));
 }
@@ -151,15 +177,38 @@ function Image_search(imagePath, page, run_image_search){
             const data_images_search = data.results
             console.log('page: ', page)
             if (run_image_search==1){
-                addImagesToGrid(data_images_search)
+                addImagesToGrid(data_images_search, false, [])
+            }
+        })
+        .catch(error => console.error('Error searching:', error));
+}
+function Image_video(imagePath, page, run_image_video){
+    if (imagePath !== ""){
+        img_path_backup_video = imagePath
+        console.log("imagePath", imagePath)
+    }
+    fetch(`/image_video?page=${page}&per_page=${imagesPerPage}&imagePath=${encodeURIComponent(img_path_backup_video)}`)
+        .then(response => response.json())
+        .then(data => {
+            const data_combine = data.result_combine
+            const data_filter = data.result_filter
+            console.log('page: ', page)
+            if (run_image_video==1){
+                addImagesToGrid(data_combine, true, data_filter)      
             }
         })
         .catch(error => console.error('Error searching:', error));
 }
 function Show_Image_search(imagePath) {
-    newWindow = window.open(`/show_image_search?imagePath=${encodeURIComponent(imagePath)}`, '_blank');
+    const newWindow = window.open(`/show_image_search?imagePath=${encodeURIComponent(imagePath)}`, '_blank');
     newWindow.addEventListener('load', function() {
         newWindow.Image_search(imagePath, 1, 1);
+    });
+}
+function Show_Image_video(imagePath) {
+    const newWindow = window.open(`/show_image_video?imagePath=${encodeURIComponent(imagePath)}`, '_blank');
+    newWindow.addEventListener('load', function() {
+        newWindow.Image_video(imagePath, 1, 1);
     });
 }
 
@@ -185,7 +234,7 @@ function loadImagesForPage(page) {
         .then(response => response.json())
         .then(data => {
             totalImages = data.totalImages; 
-            addImagesToGrid(data.images);
+            addImagesToGrid(data.images, true, []);
         })
         .catch(error => console.error('Error fetching images:', error));
 }
@@ -193,9 +242,13 @@ document.getElementById("nextPageButton").addEventListener("click", function() {
     currentPage++;
     console.log('page: ',currentPage)
     console.log('path_img_search', image_path_search)
+    console.log('image_video_search: ', image_video_search)
     if (regex.test(currentURL)) {
         run_image_search=1;
         Image_search(image_path_search, currentPage, run_image_search);       
+    }else if (regex_video.test(currentURL)){
+        run_image_video=1;
+        Image_video(image_video_search, currentPage, run_image_video);
     }
     else if (btn_text_serach==0){
         loadImagesForPage(currentPage);
@@ -209,9 +262,13 @@ document.getElementById("prevPageButton").addEventListener("click", function() {
         currentPage--;
         console.log('page: ',currentPage)
         console.log('path_img_search', image_path_search)
+        console.log('image_video_search: ', image_video_search)
         if (regex.test(currentURL)) {
             run_image_search=1;
             Image_search(image_path_search, currentPage, run_image_search);
+        }else if (regex_video.test(currentURL)){
+            run_image_video=1;
+            Image_video(image_video_search, currentPage, run_image_video);
         }
         else if (btn_text_serach==0){
             loadImagesForPage(currentPage);

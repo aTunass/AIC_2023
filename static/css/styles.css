@@ -127,6 +127,12 @@ h2 {
     font-size: 11px;
     cursor: pointer;
 }
+.Image_video {
+    margin-left: 10px;
+    margin-top: 10px; /* Điều chỉnh khoảng cách lên trên */
+    font-size: 11px;
+    cursor: pointer;
+}
 .image-info {
     width: auto;
     text-align: left;
@@ -135,6 +141,9 @@ h2 {
 }
 #info-text {
     font-size: 12px; /* Thay đổi kích thước font chữ */
+}
+.green-border {
+    border: 8px solid rgb(32, 209, 15); /* Định dạng viền xanh lá */
 }
 
 
