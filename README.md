@@ -22,18 +22,24 @@ Leader: [Nguyễn Hoàng Anh Tuấn](https://github.com/aTunass)
 - [Trần Hữu Hiếu](https://github.com/HieuTran2019)
 ---
 ## To do task 
-- [x] [Faiss]()
-- [x] [BLIP]()
-- [x] [TransnetV2]()
-- [x] [Flask]
-- [x] [Front-end]
+- [x] [Faiss](https://github.com/facebookresearch/faiss)
+- [x] [BLIP](https://github.com/salesforce/BLIP)
+- [x] [TransnetV2](https://github.com/soCzech/TransNetV2)
+- [x] [Flask](https://github.com/pallets/flask)
+- [x] [HTML, CSS, JS]
 ---
 ## Setup
 ```
 pip install -r requirements.txt
 ```
+[Setup Data](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
 ## Inference
 ```
-
+python app.py
 ```
+## Demo
+### web
+- ![UI](image/ui.png)
+### video
+- [Vong so tuyen](https://www.youtube.com/watch?v=36xyXqKnups)
 ## Reference 
