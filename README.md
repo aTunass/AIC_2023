@@ -32,11 +32,24 @@ Leader: [Nguyễn Hoàng Anh Tuấn](https://github.com/aTunass)
 ```
 pip install -r requirements.txt
 ```
-[Setup Data](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
+- Setup pythonpath
+```
+import sys
+sys.path.append('/home/tuan/Desktop/AIC_2023/utils')
+print(sys.path))
+```
+- [Setup Data](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
 ## Inference
 ```
 python app.py
 ```
+## Functions of the web
+- Text search (Eng or Vietnamese)
+- Image search
+- Get video
+- Submit
+- Show and edit csv file
+- Download csv file
 ## Demo
 ### web
 - ![UI](image/ui.png)
