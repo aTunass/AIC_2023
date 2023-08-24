@@ -2,10 +2,12 @@ const viRadio = document.getElementById('vi');
 const enRadio = document.getElementById('en');
 const searchButton = document.getElementById('search-button');
 const searchAltButton = document.getElementById('show_images');
+const re_rankButton = document.getElementById('re_ranking');
 
 let searchText = document.getElementById("search-box").value;
 let trans = 1;
 let btn_text_serach = 0;
+let btn_re_ranking = 0;
 let currentURL = window.location.href; 
 let image_path_search = ""
 let image_video_search=""
@@ -58,6 +60,13 @@ searchButton.addEventListener('click', function() {
     searchByText(searchText, currentPage, trans);
     btn_text_serach=1;
 });
+re_rankButton.addEventListener('click', function() {
+    searchText = document.getElementById("search-box").value;
+    console.log('re-rank: ',searchText, trans);
+    currentPage=1;
+    reRanking(searchText, currentPage, trans);
+    btn_re_ranking=1;
+});
 searchAltButton.addEventListener('click', function() {
     console.log('Show images clicked');
     check_click=0;
@@ -67,6 +76,8 @@ searchAltButton.addEventListener('click', function() {
     }else if (regex_video.test(currentURL)){
         run_image_video=1;
         Image_video(image_video_search, currentPage, run_image_video);
+    }else if(btn_re_ranking==1){
+        reRanking(searchText, currentPage, trans);
     }
     else if (btn_text_serach==0){
         loadImagesForPage(currentPage);
@@ -87,6 +98,7 @@ function addImagesToGrid(images, shouldAddBorder, imagesToBorder) {
         imageItem.style.backgroundImage = "url('" + imagePath + "')";
         if (shouldAddBorder) {
             if (imagesToBorder.includes(imagePath)) {
+
                 imageItem.classList.add("green-border"); // Thêm lớp để có border xanh lá
             }
         }
@@ -121,15 +133,25 @@ function addImagesToGrid(images, shouldAddBorder, imagesToBorder) {
             image_video_search = imagePath
             Show_Image_video(imagePath);
         });
+        const show_image_segment = document.createElement("button");
+        show_image_segment.className = "show_image_segment"
+        show_image_segment.textContent = "S-S";
+        show_image_segment.addEventListener("click", function() {
+            Show_image_segment(imagePath);
+        });
         
         const imagePathSpan = document.createElement("span");
         imagePathSpan.className = "image-path";
-        imagePathSpan.textContent = imagePath;
+        const imagePathParts = imagePath.split('/'); // Tách đường dẫn thành các phần
+        const displayedPath = imagePathParts.slice(-3).join('/'); // Lấy ba phần cuối cùng và ghép lại
+        imagePathSpan.textContent = displayedPath;
         // imageItem.appendChild(imagePathSpan);
         if (check_click==1){
             imageItem.appendChild(submitButton);
             imageItem.appendChild(newPageButton);
             imageItem.appendChild(imageVideoButton);
+            imageItem.appendChild(show_image_segment);
+            imageItem.appendChild(imagePathSpan);
         }
         
         imageContainer.appendChild(imageItem);
@@ -144,6 +166,8 @@ const show_options = document.getElementById('images_search_button')
             }else if (regex_video.test(currentURL)){
                 run_image_video=1;
                 Image_video(image_video_search, currentPage, run_image_video);
+            }else if(btn_re_ranking==1){
+                reRanking(searchText, currentPage, trans);
             }
             else if (btn_text_serach==0){
                 loadImagesForPage(currentPage);
@@ -174,6 +198,13 @@ function searchByText(text, page, trans) {
         })
         .catch(error => console.error('Error searching:', error));
 }
+function reRanking(text, page, trans) {
+    fetch(`/re_ranking?query=${text}&trans=${trans}&page=${page}&per_page=${imagesPerPage}`)
+        .then(response => response.json())
+        .then(data => {
+            addImagesToGrid(data.results, false, []);
+        })
+} 
 function Image_search(imagePath, page, run_image_search){
     if (imagePath !== ""){
         img_path_backup = imagePath
@@ -224,6 +255,11 @@ function Show_Image_video(imagePath) {
     newWindow.addEventListener('load', function() {
         newWindow.Image_video(imagePath, 1, 1);
     });
+}
+function Show_image_segment(imagePath) {
+    var newWindow = window.open(`/show_segment_image?imagePath=${encodeURIComponent(imagePath)}`, '_blank');
+    var imageContent = '<img src="' + imagePath + '" alt="Hình ảnh">';
+    newWindow.document.write(imageContent);
 }
 function Download_csv_file(){
     // Tạo yêu cầu tải xuống tệp CSV
@@ -284,6 +320,8 @@ document.getElementById("nextPageButton").addEventListener("click", function() {
     }else if (regex_video.test(currentURL)){
         run_image_video=1;
         Image_video(image_video_search, currentPage, run_image_video);
+    }else if(btn_re_ranking==1){
+        reRanking(searchText, currentPage, trans);
     }
     else if (btn_text_serach==0){
         loadImagesForPage(currentPage);
@@ -304,6 +342,8 @@ document.getElementById("prevPageButton").addEventListener("click", function() {
         }else if (regex_video.test(currentURL)){
             run_image_video=1;
             Image_video(image_video_search, currentPage, run_image_video);
+        }else if(btn_re_ranking==1){
+            reRanking(searchText, currentPage, trans);
         }
         else if (btn_text_serach==0){
             loadImagesForPage(currentPage);

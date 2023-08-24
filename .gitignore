@@ -1,2 +1,5 @@
 Data
 test.py
+lst_scenes
+faiss_cosine.bin
+keyframes_id_all.json

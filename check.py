@@ -1,6 +1,9 @@
 import torch
 import sys
 import os
+import sys
+sys.path.append('/home/tuan/Desktop/AIC_2023/utils')
+print(sys.path)
 from utils.My_BLIP import my_blip_itm, load_image
 from utils.My_Faiss import MyFaiss
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -20,8 +23,8 @@ model = model.to(device=device)
 # #cosine similarity
 # print(image_feat @ text_feature1.t())
 ##### TESTING #####
-bin_file='faiss_cosine_1_3.bin'
-json_path = 'modified_paths.json'
+bin_file='faiss_cosine.bin'
+json_path = 'keyframes_id_all.json'
 
 cosine_faiss = MyFaiss('Data', bin_file, json_path)
 
@@ -29,8 +32,11 @@ cosine_faiss = MyFaiss('Data', bin_file, json_path)
 ##### TEXT SEARCH #####
 text = 'Có hai người dẫn chương trình, một người là nam mặc áo sơ mi trắng đeo cà vạt, người còn lại là nữ mặc váy. Cả hai người đều đeo kính'
 
-scores, idx_image, image_paths = cosine_faiss.text_search(text, k=25, trans=True, model=model)
+scores, idx_image, image_paths = cosine_faiss.text_search(text, k=300, trans=True, model=model)
 print(scores) 
-# print(image_paths)
+print(image_paths)
 print(idx_image)
 print(type(idx_image))
+text = 'nền phía sau màu vàng'
+path = cosine_faiss.re_ranking_bytext(text, idx_image, image_paths, trans=True, model=model)
+print(path)

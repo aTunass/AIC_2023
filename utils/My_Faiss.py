@@ -39,7 +39,14 @@ class Translation:
         text = self.preprocessing(text)
         return self.translator.translate(text) if self.__mode in 'translate' \
                 else self.translator.translate(text, dest=self.__to_lang).text
-
+def custom_sort(id_query, image_path, new_id):
+    result = []
+    # Tạo một dictionary để ánh xạ họ sang tên
+    id_path = dict(zip(id_query, image_path))
+    # Lặp qua danh sách họ thay đổi và thêm tên tương ứng vào danh sách kết quả
+    for id in new_id:
+        result.append(id_path[id])
+    return result
 class MyFaiss:
   def __init__(self, root_database: str, bin_file: str, json_path: str):
     self.index = self.load_bin_file(bin_file)
@@ -98,6 +105,29 @@ class MyFaiss:
         image_paths = list(map(self.id2img_fps.get, list(map(str, idx_image))))
 
         return scores, idx_image, image_paths 
+  def re_ranking_bytext(self, text, id_querys, image_paths, trans, model): 
+        if trans:
+          text = self.translater(text)
+        print(text)
+        ###### TEXT FEATURES EXACTING ######
+        with torch.no_grad():
+            text_features = model.get_text_features(text, device=self.__device ).cpu().detach().numpy().astype(np.float32)
+        result = []
+        for id_query in id_querys:
+          query_feats = self.index.reconstruct(int(id_query)).reshape(1,-1)
+          result.append(query_feats)
+        image_path_list = np.array(id_querys)
+        concatenated_result= np.concatenate(result, axis=0)
+        cosine = concatenated_result @ text_features.reshape(256, 1)
+        print(cosine)
+        result_dict = {}
+        for i, index in enumerate(id_querys):
+            result_dict[index] = cosine[i][0]
+        #sorted_dict = dict(sorted(result_dict.items(), key=lambda item: item[1]))
+        sorted_dict = dict(sorted(result_dict.items(), key=lambda item: item[1], reverse=True))
+        output = list(sorted_dict)
+        path = custom_sort(id_querys, image_paths, output)
+        return path
   def test(self, id):
      image_paths = list(map(self.id2img_fps.get, list(map(str, id))))
      return image_paths

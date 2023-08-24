@@ -44,7 +44,7 @@ body {
     border-top: 2px solid #007bff; /* Thêm viền màu xanh dương */
 }
 /*css for id start*/
-.search-buttons, .pages-button {
+.search-buttons, .pages-button, .show-images {
     justify-content: space-between;
     display: flex; /* Hiển thị nút cùng một hàng */
 }
@@ -61,7 +61,7 @@ textarea#search-box {
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
-button#search-button, button#show_images, button#nextPageButton, button#prevPageButton, button#clearButton {
+button#search-button, button#show_images, button#nextPageButton, button#prevPageButton, button#clearButton, button#re_ranking {
     display: block; /* Đảm bảo nút hiển thị trên một dòng riêng biệt */
     width: 48%; /* Đặt chiều rộng tự động để nút dãn ra theo nội dung */
     padding: 10px 10%; /* Tùy chỉnh khoảng cách nút từ nội dung */
@@ -71,9 +71,6 @@ button#search-button, button#show_images, button#nextPageButton, button#prevPage
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-button#show_images{
-    width: 100%;
 }
 /*css for id end*/
 
@@ -112,7 +109,7 @@ h2 {
     display: block;
     margin-top: 5px;
     font-size: 12px;
-    color: #888482;
+    color: #e20303;
 }
 .submit-button {
     margin-left: 5px;

@@ -20,14 +20,13 @@ model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
 model.eval()
 model = model.to(device=device)
 # model=1
-
 #Load Faiss
-bin_file='faiss_cosine_L05.bin'
-json_path = 'keyframes_L05.json'
+bin_file='faiss_cosine.bin'
+json_path = 'keyframes_id_all.json'
 cosine_faiss = MyFaiss('Data', bin_file, json_path)
 #List path
 # Đường dẫn tới tệp JSON
-input_file = 'keyframes_L05.json'
+input_file = 'keyframes_id_all.json'
 # Đọc dữ liệu từ tệp JSON
 with open(input_file, 'r') as file:
     modified_paths = json.load(file)
@@ -57,14 +56,30 @@ def get_images():
     return jsonify({'totalImages': total_images, 'images': images})
 @app.route('/text_search')
 def text_search():
+    global path_4_re_ranking
+    global index_4_re_ranking
     query = request.args.get('query', '')
     trans = int(request.args.get('trans', 1))
-    scores, idx_image, image_paths = cosine_faiss.text_search(query, k=250, trans=trans, model=model)
+    scores, idx_image, image_paths = cosine_faiss.text_search(query, k=500, trans=trans, model=model)
+    path_4_re_ranking = image_paths
+    index_4_re_ranking = idx_image
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 42))
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     image_files = image_paths[start_idx:end_idx]
+    images = [os.path.join(database, filename) for filename in image_files]
+    return jsonify({'results': images})
+@app.route('/re_ranking')
+def re_ranking():
+    query = request.args.get('query', '')
+    trans = int(request.args.get('trans', 1))
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 42))
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    path = cosine_faiss.re_ranking_bytext(query, index_4_re_ranking, path_4_re_ranking, trans=trans, model=model)
+    image_files = path[start_idx:end_idx]
     images = [os.path.join(database, filename) for filename in image_files]
     return jsonify({'results': images})
 
@@ -90,7 +105,7 @@ def image_search():
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 42))
     id_query = cosine_faiss.get_id_from_img_path(relative_path)
-    scores, idx_image, image_paths = cosine_faiss.image_search(id_query, k=250)
+    scores, idx_image, image_paths = cosine_faiss.image_search(id_query, k=400)
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     image_files = image_paths[start_idx:end_idx]
@@ -110,12 +125,16 @@ def image_video():
     print(relative_path)
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 42))
-    result_combine, result_filter = get_video(image_path=relative_path, k_scenes=15, database=database)
+    result_combine, result_filter = get_video(image_path=relative_path, k_scenes=10, database=database)
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     result_combine = result_combine[start_idx:end_idx]
     return jsonify({'result_combine': result_combine, 'result_filter': result_filter})
-
+@app.route('/show_segment_image', methods=['POST'])
+def show_segment_image():
+    data = request.get_json()
+    image_path = data.get('imagePath', '')
+    return jsonify(image_path)
 csv_data = []
 @app.route('/submit_image', methods=['POST'])
 def submit_image():
