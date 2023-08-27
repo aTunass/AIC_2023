@@ -125,7 +125,7 @@ def image_video():
     print(relative_path)
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 42))
-    result_combine, result_filter = get_video(image_path=relative_path, k_scenes=10, database=database)
+    result_combine, result_filter = get_video(image_path=relative_path, k_scenes=12, database=database)
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     result_combine = result_combine[start_idx:end_idx]

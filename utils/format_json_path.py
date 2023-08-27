@@ -40,7 +40,7 @@ print(list(js.values())[0])
 
 # print(values_list)
 '''----------------------------------------'''
-# Thay đổi chữ "Database" thành "Data" trong các đường dẫn
+#Thay đổi chữ "Database" thành "Data" trong các đường dẫn
 # for key in js:
 #     js[key] = js[key].replace("Database", "Data")
 

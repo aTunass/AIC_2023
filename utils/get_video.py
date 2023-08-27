@@ -19,6 +19,7 @@ def get_lst_path_video(image_folder, range_start, range_end):
     return result_paths
 def get_video(image_path, k_scenes, database):
     path_parts = image_path.split('/')
+    print(path_parts)
     folder_name2 = path_parts[-3]
     print(folder_name2)
     folder_name = path_parts[-2]
