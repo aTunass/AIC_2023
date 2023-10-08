@@ -1,0 +1,175 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    height: 100vh; 
+    margin: 0px;
+}
+
+.search-container, .image-container {
+    height: 100vh;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid #007bff; /* Thêm viền màu xanh dương */
+    /* overflow: hidden; /* Ẩn thanh trượt * */
+}
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    /* grid-template-columns: 3fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr; */
+    grid-gap: 5px; /* Khoảng cách giữa các ảnh */
+}
+.search-container {
+    width: 16%; /* Chiều rộng 1/4 */
+    height: 100vh;
+}
+.search, .image-info{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.Languages{
+    margin-bottom: 10px;
+}
+.number_results{
+    width: 100%;
+    justify-content: space-around;
+}
+.Model{
+    margin-bottom: 10px;
+}
+.image-info{
+    width: auto; /* Chiều rộng 1/4 */
+    padding-left: 0%;
+    padding-right: 0%;
+    height: 42vh;
+    background-color: #c5f3bc;
+    border-radius: 5px;
+    border-top: 2px solid #007bff; /* Thêm viền màu xanh dương */
+}
+/*css for id start*/
+.search-buttons, .pages-button, .show-images, .image_option, .csv, .load_image{
+    justify-content: space-between;
+    display: flex; /* Hiển thị nút cùng một hàng */
+}
+.pages-button{
+    margin-top: 10px;
+}
+textarea#search-box {
+    margin-top: 10px;
+    font-size: 16px;
+    width: auto;
+    resize: vertical; /* Cho phép người dùng điều chỉnh chiều cao dọc */
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+button#search-button, button#nextPageButton, button#prevPageButton, button#clearButton, button#re_ranking, button#search_k, button#image_path_onl, button#image_path_off, button#asr_search{
+    display: block; /* Đảm bảo nút hiển thị trên một dòng riêng biệt */
+    width: 48%; /* Đặt chiều rộng tự động để nút dãn ra theo nội dung */
+    padding: 10px 10%; /* Tùy chỉnh khoảng cách nút từ nội dung */
+    margin-top: 5px; /* Tạo khoảng cách từ textarea */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button#show_images, button#images_search_button, button#show_csv, button#Download_csv{
+    display: block; /* Đảm bảo nút hiển thị trên một dòng riêng biệt */
+    width: 48%; /* Đặt chiều rộng tự động để nút dãn ra theo nội dung */
+    padding: 10px 10%; /* Tùy chỉnh khoảng cách nút từ nội dung */
+    margin-top: 5px; /* Tạo khoảng cách từ textarea */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/*css for id end*/
+
+h2 {
+    font-size: 20px;
+}
+
+#search-box {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#search-button, #pages-button, #search_k{
+    padding: 10px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.image-item {
+    width: auto; /* Chiều rộng tối đa là 100% của phần tử chứa */
+    height: 100%; /* Kích thước theo chiều cao ban đầu */
+    background-size: cover;
+    background-repeat: no-repeat; /* Không lặp lại ảnh nếu vượt quá kích thước */
+    transition: transform 0.3s; /* Thêm hiệu ứng chuyển đổi */
+}
+.image-item:not(.selected):hover, .Image_search, .submit-button, .Image_video, .show_image_segment, .show_video_button {
+    transform: scale(1.1); 
+
+}
+.image-path {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #e20303;
+}
+.submit-button {
+    margin-left: 5px;
+    /* Các thuộc tính hiện tại của nút */
+    margin-top: 10px; /* Điều chỉnh khoảng cách lên trên */
+    font-size: 11px;
+    cursor: pointer;
+}
+.Image_search {
+    margin-left: 10px;
+    margin-top: 10px; /* Điều chỉnh khoảng cách lên trên */
+    font-size: 11px;
+    cursor: pointer; 
+}
+.Image_search, .submit-button, .Image_video, .show_image_segment, .show_video_button {
+    margin-left: 20px;
+    margin-top: 5px; /* Điều chỉnh khoảng cách lên trên */
+    font-size: 12px;
+    cursor: pointer;
+}
+.image-info {
+    width: auto;
+    text-align: left;
+    margin-top: 20px;
+    padding-right: 0%;
+}
+#info-text {
+    font-size: 12px; /* Thay đổi kích thước font chữ */
+}
+#images_search_button {
+    font-size: 12px; /* Thay đổi kích thước font chữ */
+}
+.green-border {
+    border: 8px solid rgb(32, 209, 15); /* Định dạng viền xanh lá */
+}
+.submit_checked{
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+
