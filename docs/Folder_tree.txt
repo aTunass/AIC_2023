@@ -15,13 +15,12 @@
               └── Keyframes_L02
                       └── 000000.jpg
                       └── 000001.jpg
-    ├── Team3/
-         └── blip_bin_json
+     ├── blip_bin_json
 	        └── file.bin
 	        └── file.json
-	 └── interb_bin_json
+     ├── interb_bin_json
 	        └── file.bin
 	        └── file.json
-	 └── video_summary
+     ├── video_summary
 	        └── model
 	              └── file.ckpt

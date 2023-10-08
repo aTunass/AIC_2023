@@ -36,24 +36,65 @@ Leader: [Nguyễn Hoàng Anh Tuấn](https://github.com/aTunass)
 pip install -r requirements.txt (faiss gpu or faiss cpu depend your device)
 
 ```
-- [Folder tree](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
+- Folder tree
+```
+
+├── AIC_2023/ 
+│   ├── static/
+         └── team3
+	      └── css/styles.css
+	      └── js/script.js
+	 └── Video
+	      └── video_scenes_L01
+	      └── video_scenes_L02
+	      └── ...
+         └── Data
+              └── Keyframes_L01
+                      └── 000000.jpg
+                      └── 000001.jpg
+              └── Keyframes_L02
+                      └── 000000.jpg
+                      └── 000001.jpg
+     ├── blip_bin_json
+	        └── file.bin
+	        └── file.json
+     ├── interb_bin_json
+	        └── file.bin
+	        └── file.json
+     ├── video_summary
+	        └── model
+	              └── file.ckpt
+
+```
+## Data
+#### File bin/json
 - [blip_bin_json](https://drive.google.com/drive/folders/1WepsGul2H9KKWdyl9u4jMMrDoQs8WY2q?usp=sharing)
-- [intern_bin_json]
+- [intern_bin_json](https://drive.google.com/drive/folders/1IHSGof7YPns13xbErPAkQ-fybJUPP4ZG?usp=sharing)
+#### Keyframes
+- [batch 1](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-1)
+- [batch 2](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-2)
+- [batch 3]()
+#### Video scenes
+- [batch 1](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-1)
+- [batch 2](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-2)
+- [batch 3]()
 ## Inference
 ```
-python Team3/fastAPI_local.py
+python fastAPI_local.py
+
 ```
 ## Main Functions of the web
 - Text search (Eng or Vietnamese)
 - Image search 
 - ASR search
-- Re-ranking
-- Get video
+- Re-ranking 
+- Get video frame
+- Show video frame
 - Submit
 ## Demo
-### web
+#### web
 - ![UI](image/ui.png)
-### video
-- 
+#### video
+- [giới thiệu hệ thống](https://youtu.be/2x8CFUoP8U4)
 ## Reference 
 - [Video-text-retrieval](https://github.com/AIVIETNAMResearch/Video-Text-Retrieval/tree/main)
