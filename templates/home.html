@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Search</title>
+    <link rel="stylesheet" href="static/team3/css/my_styles.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="search-container">
+        <div class="search">
+            <h2>Query search</h2>
+            <!-- <button id="reset">reset</button> -->
+            <div class="Model">
+                <form style="display: flex;">
+                    <input type="radio" id="blip" name="Model" value="blip" checked>
+                    <label for="blip"> Blip</label><br> 
+                    
+                    <input type="radio" id="intern" name="Model" value="intern">
+                    <label for="intern"> Intern </label><br>
+                </form>
+            </div>
+            <div class="Languages">
+                <form style="display: flex;"> 
+                    <input type="radio" id="vi" name="Languages" value="vi">
+                    <label for="vi"> Vietnamese</label><br> 
+                    
+                    <input type="radio" id="en" name="Languages" value="en" checked>
+                    <label for="en"> English </label><br>
+                </form>
+            </div>
+            <div class="number_results">
+                <form style="display: flex;">
+                    <input type="radio" id="500" name="number_results" value="500">
+                    <label for="500"> 500</label><br>
+                    <input type="radio" id="1000" name="number_results" value="1000" checked>
+                    <label for="1000"> 1k</label><br>        
+                    <input type="radio" id="3000" name="number_results" value="3000" checked>
+                    <label for="3000"> 3k </label><br>
+                    <input type="radio" id="6000" name="number_results" value="6000" checked>
+                    <label for="3000"> 6k </label><br>
+                    <input type="radio" id="9000" name="number_results" value="9000" checked>
+                    <label for="3000"> 9k </label><br>
+                </form>
+            </div>
+            <textarea id="search-box" placeholder="Enter your search..." rows="13"></textarea>
+            <div class="search-buttons">
+                <button id="search-button">Search</button>
+                <button id="clearButton">Clear</button>
+            </div>
+            <div class="pages-button"> 
+                <button id="nextPageButton">Next Page</button>
+                <button id="prevPageButton">Previous Page</button>
+            </div> 
+            <div class="show-images"> 
+                <button id="search_k">Re-ranking-scenes</button>
+                <button id="re_ranking">Re-ranking</button>
+            </div>
+            <div class="load_image">
+                <button id="image_path_onl">online</button>
+                <button id="asr_search">Asr_search</button>
+            </div>
+            <!-- <div class="asr">
+                <button id="asr_search">Asr_search</button>
+            </div> -->
+        </div>
+        <div class="image-info"> 
+            <h2>Image Path static/Data/</h2>
+            <p id="info-text">Click on an image to see its path.</p>
+            <div class="submit_checked">
+                <form style="display: flex;">
+                    <input type="radio" id="submit_checked_scenes" name="submit" value="checked">
+                        <label for="checked"> checked </label><br>
+                    <input type="radio" id="submit_unchecked_scenes" name="submit" value="unchecked" checked>
+                        <label for="unchecked"> unchecked </label><br>
+                </form>
+            </div>
+            <div class="image_option">
+                <button id="show_images">Show Image</button>
+                <button id="images_search_button">Show options</button>
+            </div>
+            <div class="csv">
+                <button id="show_csv">Show csv</button>
+                <button id="Download_csv">Download</button>
+            </div>
+        </div>
+    </div>
+    <div class="image-container" id="image-container">
+        
+    </div>
+</div>
+
+<script src="static/team3/js/my_script
+.js">
+</script>
+
+</body>
+</html>

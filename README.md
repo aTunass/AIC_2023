@@ -9,8 +9,8 @@ In this contest, the goal is to find the event video with known information. Spe
     31/07/2023: Thời gian đăng ký
     07-08/2023: Tổ chức tập huấn
     07/2023: Công bố nội dung, yêu cầu của vòng sơ tuyển
-    08/2023: Thời gian diễn ra vòng sơ tuyển (30 ngày)
-    05/09/2023: Thời gian diễn ra vòng chung kết
+    16-18-20/09/2023: Thời gian diễn ra vòng sơ tuyển (30 ngày)
+    08/10/2023: Thời gian diễn ra vòng chung kết
 ## SPK Sandbox Team
 Mentor: [Đỗ Trần Nhật Tường](https://github.com/dotrannhattuong)
 
@@ -26,33 +26,34 @@ Leader: [Nguyễn Hoàng Anh Tuấn](https://github.com/aTunass)
 - [x] [BLIP](https://github.com/salesforce/BLIP)
 - [x] [TransnetV2](https://github.com/soCzech/TransNetV2)
 - [x] [Flask](https://github.com/pallets/flask)
+- [x] [Fast API](https://github.com/tiangolo/fastapi)
+- [x] [Intern Video](https://github.com/OpenGVLab/InternVideo)
+- [x] [Youtube Transcripts](https://github.com/jdepoix/youtube-transcript-api)
 - [x] [HTML, CSS, JS]
 ---
 ## Setup
 ```
-pip install -r requirements.txt
+pip install -r requirements.txt (faiss gpu or faiss cpu depend your device)
+
 ```
-- Setup pythonpath
-```
-import sys
-sys.path.append('/home/tuan/Desktop/AIC_2023/utils')
-print(sys.path))
-```
-- [Setup Data](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
+- [Folder tree](https://github.com/aTunass/AIC_2023/blob/main/docs/Folder_tree.txt)
+- [blip_bin_json](https://drive.google.com/drive/folders/1WepsGul2H9KKWdyl9u4jMMrDoQs8WY2q?usp=sharing)
+- [intern_bin_json]
 ## Inference
 ```
-python app.py
+python Team3/fastAPI_local.py
 ```
-## Functions of the web
+## Main Functions of the web
 - Text search (Eng or Vietnamese)
-- Image search
+- Image search 
+- ASR search
+- Re-ranking
 - Get video
 - Submit
-- Show and edit csv file
-- Download csv file
 ## Demo
 ### web
 - ![UI](image/ui.png)
 ### video
-- [Vong so tuyen](https://www.youtube.com/watch?v=36xyXqKnups)
+- 
 ## Reference 
+- [Video-text-retrieval](https://github.com/AIVIETNAMResearch/Video-Text-Retrieval/tree/main)

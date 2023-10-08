@@ -1,0 +1,27 @@
+
+├── AIC_2023/ 
+│   ├── static/
+         └── team3
+	      └── css/styles.css
+	      └── js/script.js
+	 └── Video
+	      └── video_scenes_L01
+	      └── video_scenes_L02
+	      └── ...
+         └── Data
+              └── Keyframes_L01
+                      └── 000000.jpg
+                      └── 000001.jpg
+              └── Keyframes_L02
+                      └── 000000.jpg
+                      └── 000001.jpg
+    ├── Team3/
+         └── blip_bin_json
+	        └── file.bin
+	        └── file.json
+	 └── interb_bin_json
+	        └── file.bin
+	        └── file.json
+	 └── video_summary
+	        └── model
+	              └── file.ckpt

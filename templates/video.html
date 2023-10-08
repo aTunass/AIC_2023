@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <style>
+        /* CSS để tạo viền cho video */
+        #video4 {
+            border: 10px solid #12c71c; /* Độ dày và màu sắc của viền */
+        }
+        .title{
+            display: flex;
+        }
+        button#autoPlay{
+            display: block; /* Đảm bảo nút hiển thị trên một dòng riêng biệt */
+            width: 10%; /* Đặt chiều rộng tự động để nút dãn ra theo nội dung */
+            margin-top: 5px; /* Tạo khoảng cách từ textarea */
+            background-color: #007bff;
+            margin-left: 50px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h1>Xem Video</h1>
+        <button id="autoPlay">autoPlay</button>
+    </div>
+    <video id="video" width="640" height="360" controls>
+        <source src="{{ video_url }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video1" width="640" height="360" controls>
+        <source src="{{ video_url1 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video2" width="640" height="360" controls>
+        <source src="{{ video_url2 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video3" width="640" height="360" controls>
+        <source src="{{ video_url3 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video4" width="640" height="360" controls>
+        <source src="{{ video_url4 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video5" width="640" height="360" controls>
+        <source src="{{ video_url5 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video6" width="640" height="360" controls>
+        <source src="{{ video_url6 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video7" width="640" height="360" controls>
+        <source src="{{ video_url7 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+    <video id="video8" width="640" height="360" controls>
+        <source src="{{ video_url8 }}" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video HTML5.
+    </video>
+
+    <script>
+        const autoPlayButton = document.getElementById('autoPlay')
+        const videos = [
+            "video",
+            "video1",
+            "video2",
+            "video3",
+            "video4",
+            "video5",
+            "video6",
+            "video7",
+            "video8",
+        ];
+        let check=0
+        autoPlayButton.addEventListener('click', function() {
+            console.log("autoplay")
+            playVideo(1)
+        });
+        function playVideo(check=0) {
+            if (check==1){
+                document.getElementById(videos[0]).play();
+                document.getElementById(videos[0]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[1]).play();}
+                    });
+                document.getElementById(videos[1]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[2]).play();}
+                    });
+                document.getElementById(videos[2]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[3]).play();}
+                    });
+                document.getElementById(videos[3]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[4]).play();}
+                    });
+                document.getElementById(videos[4]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[5]).play();}
+                    });
+                document.getElementById(videos[5]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[6]).play();}
+                    });
+                document.getElementById(videos[6]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[7]).play();}
+                    });
+                document.getElementById(videos[7]).addEventListener("ended", function() {
+                    if (check==1){document.getElementById(videos[8]).play();}
+                    check=0
+                    });
+                console.log("autoplay check", check)
+            }
+            // for (let i = 0; i < videos.length; i++) {
+            //     document.getElementById(videos[i]).addEventListener("ended", function() {
+            //         i++;
+            //         document.getElementById(videos[i]).play();
+            //     });
+            // }
+        }
+    </script>
+</body>
+</html>

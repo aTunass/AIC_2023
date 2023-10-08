@@ -1,0 +1,19 @@
+transformers==4.25.1 
+timm==0.4.12 
+fairscale==0.4.4
+faiss-gpu==1.7.2
+translate==3.6.1
+googletrans==3.1.0a0
+langdetect==1.0.9
+fastapi==0.102.0
+flask==2.3.2
+matplotlib==3.7.2 
+numpy==1.24.4 
+opencv-python==4.8.0.76
+pillow==10.0.0
+jinja2==3.1.2
+uvicorn==0.23.2
+#intern video
+decord
+scikit-image
+ftfy
