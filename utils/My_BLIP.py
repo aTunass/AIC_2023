@@ -10,7 +10,7 @@ from models.med import BertConfig, BertModel
 from models.blip import create_vit, init_tokenizer, load_checkpoint
 class My_BLIP(nn.Module):
     def __init__(self,
-                 med_config = 'Team3/configs/med_config.json',
+                 med_config = 'configs/med_config.json',
                  image_size = 384,
                  vit = 'base',
                  vit_grad_ckpt = False,

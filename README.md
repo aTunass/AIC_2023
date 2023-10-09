@@ -75,8 +75,8 @@ pip install -r requirements.txt (faiss gpu or faiss cpu depend your device)
 - [batch 2](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-2)
 - [batch 3]()
 #### Video scenes
-- [batch 1](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-1)
-- [batch 2](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-2)
+- [batch 1]()
+- [batch 2]()
 - [batch 3]()
 ## Inference
 ```

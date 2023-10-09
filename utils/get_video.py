@@ -18,7 +18,7 @@ def get_video(image_path, k_scenes, database, get_one=False):
     image_folder = os.path.join(database,'Data',folder_name2, folder_name)
     image_name = path_parts[-1]
     image_number = int(image_name.split('.')[0])  # Loại bỏ phần mở rộng (.jpg)
-    file_path = os.path.join('Team3/lst_scenes',folder_name2, f'{folder_name}.txt')
+    file_path = os.path.join('lst_scenes',folder_name2, f'{folder_name}.txt')
     with open(file_path, 'r') as file:
         content = file.read()
     lines = content.strip().split('\n')
@@ -58,7 +58,7 @@ def get_video_scenes(image_path, k_scenes, database):
     image_folder = os.path.join(database,'Data',folder_name2, folder_name)
     image_name = path_parts[-1]
     image_number = int(image_name.split('.')[0])  # Loại bỏ phần mở rộng (.jpg)
-    file_path = os.path.join('Team3/lst_scenes_video',folder_name2, f'{folder_name}.txt')
+    file_path = os.path.join('lst_scenes_video',folder_name2, f'{folder_name}.txt')
     with open(file_path, 'r') as file:
         content = file.read()
     lines = content.strip().split('\n')

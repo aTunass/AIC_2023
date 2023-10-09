@@ -15,7 +15,7 @@ from utils.My_BLIP import my_blip_itm, load_image
 import uvicorn
 import csv
 from utils.get_video import get_video, get_video_scenes
-sys.path.append('Team3/video_summary')
+sys.path.append('video_summary')
 from video_summary import InternVideo
 import requests
 """
@@ -40,24 +40,24 @@ image_size = 384
 model = my_blip_itm(pretrained=model_url, image_size=image_size, vit='base')
 model.eval()
 model = model.to(device=device)
-model_intern = InternVideo.load_model("Team3/video_summary/models/InternVideo-MM-B-16.ckpt").to(device)
+#model_intern = InternVideo.load_model("video_summary/models/InternVideo-MM-B-16.ckpt").to(device)
 #model=1
 # model_intern =1
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="Team3/templates")
-bin_file='Team3/blip_bin_json/faiss_cosine.bin'
-json_path = 'Team3/blip_bin_json/keyframes_id_full.json'
-# bin_file='Team3/blip_bin_json/faiss_cosine_L03.bin'
-# json_path = 'Team3/blip_bin_json/keyframes_id_L03.json'
+templates = Jinja2Templates(directory="templates")
+bin_file='blip_bin_json/faiss_cosine_1.bin'
+json_path = 'blip_bin_json/keyframes_id_all_1.json'
+# bin_file='blip_bin_json/faiss_cosine_L03.bin'
+# json_path = 'blip_bin_json/keyframes_id_L03.json'
 cosine_faiss = MyFaiss('Data', bin_file, json_path)
-bin_file_intern = 'Team3/intern_bin_json/faiss_cosine_intern.bin'
-json_path_intern = 'Team3/intern_bin_json/keyframes_id_intern_new.json'
-cosine_faiss_intern = MyFaiss('Data', bin_file_intern, json_path_intern)
+# bin_file_intern = 'intern_bin_json/faiss_cosine_intern.bin'
+# json_path_intern = 'intern_bin_json/keyframes_id_intern_new.json'
+# cosine_faiss_intern = MyFaiss('Data', bin_file_intern, json_path_intern)
 
-input_file = 'Team3/blip_bin_json/keyframes_id_full.json'
-# input_file = 'Team3/blip_bin_json/keyframes_id_L03.json'
+input_file = 'blip_bin_json/keyframes_id_all_1.json'
+# input_file = 'blip_bin_json/keyframes_id_L03.json'
 with open(input_file, 'r') as file:
     modified_paths = json.load(file)
 values_list = list(modified_paths.values())
@@ -90,23 +90,23 @@ async def text_search(query: str = Query(..., description="Search query"),
     image_files = image_paths
     images = [os.path.join(database, filename) for filename in image_files]
     return JSONResponse(content={'results': images})
-@app.get("/text_search_team3_intern")
-async def text_search_intern(query: str = Query(..., description="Search query"),
-                          trans: int = Query(1, description="Trans parameter"),
-                          page: int = Query(1, description="Page number"),
-                          per_page: int = Query(42, description="Images per page"),
-                          nums: int=Query(500, description="Number_results")):
-    global path_4_re_ranking, index_4_re_ranking, scores_4_re_ranking
-    print("text_search_intern", nums)
-    scores, idx_image, image_paths = cosine_faiss_intern.text_search_intern(query, k=nums, trans=trans, model=model_intern, device=device)
-    path_4_re_ranking = image_paths
-    index_4_re_ranking = idx_image
-    scores_4_re_ranking = scores
-    start_idx = (page - 1) * per_page
-    end_idx = start_idx + per_page
-    image_files = image_paths
-    images = image_files
-    return JSONResponse(content={'results': images})
+# @app.get("/text_search_team3_intern")
+# async def text_search_intern(query: str = Query(..., description="Search query"),
+#                           trans: int = Query(1, description="Trans parameter"),
+#                           page: int = Query(1, description="Page number"),
+#                           per_page: int = Query(42, description="Images per page"),
+#                           nums: int=Query(500, description="Number_results")):
+#     global path_4_re_ranking, index_4_re_ranking, scores_4_re_ranking
+#     print("text_search_intern", nums)
+#     scores, idx_image, image_paths = cosine_faiss_intern.text_search_intern(query, k=nums, trans=trans, model=model_intern, device=device)
+#     path_4_re_ranking = image_paths
+#     index_4_re_ranking = idx_image
+#     scores_4_re_ranking = scores
+#     start_idx = (page - 1) * per_page
+#     end_idx = start_idx + per_page
+#     image_files = image_paths
+#     images = image_files
+#     return JSONResponse(content={'results': images})
 @app.get("/asr_search")
 async def asr_search(query: str = Query(..., description="Search query"),
                           trans: int = Query(1, description="Trans parameter"),
@@ -115,7 +115,7 @@ async def asr_search(query: str = Query(..., description="Search query"),
                           nums: int=Query(500, description="Number_results")):
     global path_4_re_ranking, index_4_re_ranking, scores_4_re_ranking
     print("asr_search", nums)
-    idx_image, image_paths = cosine_faiss.asr_search(title_path_json='Team3/asr/title_batch_all.json', no_sub_json='Team3/asr/list_notitle_batch_all.json', keyframes_json='Team3/blip_bin_json/keyframes_id_full.json', sentence_to_check=query)
+    idx_image, image_paths = cosine_faiss.asr_search(title_path_json='asr/title_batch1.json', no_sub_json='asr/list_notitle_batch1.json', keyframes_json='blip_bin_json/keyframes_id_all_1.json', sentence_to_check=query)
     path_4_re_ranking = image_paths
     index_4_re_ranking = idx_image
     # scores_4_re_ranking = scores
@@ -131,7 +131,7 @@ async def image_search_onl_off(query: str = Query(..., description="Search query
                           mode: int=Query(0, description="Mode")):
     print("image_search_onl_off: ", mode)
     if mode==1:
-        folder_path = "Team3/image"
+        folder_path = "image"
         query = os.path.join(folder_path,os.listdir(folder_path)[0])
     print(query)
     image = load_demo_image(device, query, mode=mode)
@@ -309,7 +309,7 @@ async def delete_all_rows():
     return "All rows deleted successfully"
 @app.get("/download_csv")
 async def download_csv(file_name: str = "csv_data"):
-    csv_file_path = '/home/tuan/Desktop/AIC_2023_test/Team3/submit/' + file_name + '.csv'
+    csv_file_path = '/home/tuan/Desktop/AIC_2023_test/submit/' + file_name + '.csv'
     print(file_name)
     with open(csv_file_path, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
