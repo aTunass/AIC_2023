@@ -73,11 +73,13 @@ pip install -r requirements.txt (faiss gpu or faiss cpu depend your device)
 #### Keyframes
 - [batch 1](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-1)
 - [batch 2](https://www.kaggle.com/datasets/trnhuhiu/data-hcm-ai-challenge-2023-batch-2)
-- [batch 3]()
+- [batch 3 part1](https://www.kaggle.com/datasets/tuannguyenhoanganh/keyframes-batc3-part1)
+- [batch 3 part2]()
 #### Video scenes
 - [batch 1]()
-- [batch 2]()
-- [batch 3]()
+- [batch 2](https://www.kaggle.com/datasets/tuannguyenhoanganh/video-scenes-batch-2)
+- [batch 3 part1](https://www.kaggle.com/datasets/tuannguyenhoanganh/video-scenes-batch3-part1)
+- [batch 3 part2](https://www.kaggle.com/datasets/tuannguyenhoanganh/video-scenes-batch3-part2)
 ## Inference
 ```
 python fastAPI_local.py
